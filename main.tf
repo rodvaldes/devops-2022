@@ -38,7 +38,7 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_firewall" "default" {
-  name    = "devops-2022-firewall"
+  name    = "devops-2022-allow-max"
   network = google_compute_network.vpc_network.name
 
   allow {
