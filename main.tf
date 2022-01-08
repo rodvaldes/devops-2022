@@ -23,6 +23,15 @@ resource "google_compute_instance" "vm_instance" {
   name         = "devops-instance"
   machine_type = "e2-medium"
   tags         = ["docker", "dev"]
+  metadata = {
+    startup-script = <<-EOF
+    echo "hello you" > /test.txt
+    echo "helpme" > /test2.txt
+    echo "Bootstrapping software layer....."
+    yum update
+    yum install -y git
+  EOF
+  } 
 
   boot_disk {
     initialize_params {
