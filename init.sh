@@ -20,5 +20,5 @@ yum update
 yum install -y ansible
 yum install -y java-1.8.0-openjdk
 yum install -y maven
-git clone https://github.com/rodvaldes/devops-2022.git /home/robot
-chown robot: /home/robot/devops-2022
+git clone https://github.com/rodvaldes/devops-2022.git /home/robot/devops-2022
+chown -R robot: /home/robot/devops-2022
