@@ -26,6 +26,7 @@ usermod -aG wheel robot
 usermod -aG docker robot
 firewall-cmd --zone=public --add-service=http
 firewall-cmd --zone=public --permanent --add-port 8085/tcp
+firewall-cmd --zone=public --permanent --add-port 7990/tcp
 firewall-cmd --reload
 #yum install -y httpd
 #systemctl enable httpd
