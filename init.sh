@@ -15,5 +15,7 @@ firewall-cmd --reload
 yum install -y httpd
 systemctl enable httpd
 systemctl start httpd
-yum install epel-release
-yum install ansible
+yum install -y epel-release
+yum install - y ansible
+yum install -y java-1.8.0-openjdk
+yum install -y maven
