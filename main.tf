@@ -24,20 +24,8 @@ resource "google_compute_instance" "vm_instance" {
   machine_type = "e2-medium"
   tags         = ["docker", "dev"]
   metadata = {
-    startup-script = <<-EOF
-    echo "Bootstrapping software layer....."
-    yum update
-    yum install -y git yum-utils
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yum install -y docker-ce docker-ce-cli containerd.io
-    systemctl enable docker
-    systemctl start docker
-    groupadd docker
-    adduser robot
-    usermod -aG wheel robot
-    usermod -aG docker robot
-  EOF
-  } 
+    startup-script = file("init.sh")
+  }
 
   boot_disk {
     initialize_params {
