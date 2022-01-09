@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Bootstrapping software layer....."
+timedatectl set-timezone America/Santiago
 yum update
 yum install -y yum-utils  # este git no sirve para bitbucket
 dnf install dh-autoreconf curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel --skip-broken
