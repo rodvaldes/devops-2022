@@ -16,6 +16,10 @@ yum install -y httpd
 systemctl enable httpd
 systemctl start httpd
 yum install -y epel-release
-yum install - y ansible
+yum update
+yum install -y ansible
 yum install -y java-1.8.0-openjdk
 yum install -y maven
+su - robot
+cd
+git clone https://github.com/rodvaldes/devops-2022.git
