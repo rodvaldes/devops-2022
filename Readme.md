@@ -4,6 +4,10 @@ Este proyecto tiene el código de ejercicios devops 2022. Los desafios tecnivos 
 
 1. Manejo GCP
 2. Terraform para la creación de Infraestructura.
+    * Creación y configuración de red VCN para devops.
+    * 
+3. Bootstrap de capa de software con bash.
+    * Java, Maven, Git, Docker, Ansible, wget.
 3. Ansible para la configuración de la máquina a nivel de Sistema Operativo.
 
 
@@ -73,3 +77,141 @@ is 1.1.3. You can update by downloading from https://www.terraform.io/downloads.
 ```
 gcloud compute --project=devops-2020-337523 firewall-rules create devops-2022-allow-out-http --direction=EGRESS --priority=1000 --network=devops-2022-network --action=ALLOW --rules=tcp:80 --destination-ranges=0.0.0.0/0
 ```
+
+
+# Inicializacion de capa de software 
+
+La inicialización de la capa de software se puede automatizar mediante bash scripting o mecanismos mas avanzados.
+
+A modo de MVP se generará una automatización básica basada en bash. 
+
+* Instalación de Java, Maven, Docker, Ansible.
+
+## Instalación de Bamboo
+
+1. Creación de Base de Datos en PostgreSQL 14
+
+```
+sudo -u postgres bash -c "psql -c \"CREATE ROLE bamboo_user WITH LOGIN PASSWORD 'bamboo_user_pass' VALID UNTIL 'infinity';\""
+sudo -u postgres bash -c "psql -c \"CREATE DATABASE bamboo_db WITH ENCODING 'UNICODE' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;\""
+
+#sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE bamboo_db to bamboouser;\""
+```
+
+## 2. Instalación Bamboo
+
+La instalación de Bamboo requiere de los siguientes elementos:
+
+* Instalador.
+* Java 8 o Superior.
+* usuario bamboo
+* Base de datos postgres creada.
+
+Descarga de Instalador Bamboo
+----
+El instalador estará almacenado en un bucket Google Cloud Storage devops-2022 
+
+```
+wget https://storage.googleapis.com/devops-2022/atlassian-bamboo-8.1.1.tar.gz
+adduser bamboo
+usermod -aG wheel bamboo
+mkdir -p /opt/atlassian/bamboo
+tar -xvzf atlassian-bamboo-8.1.1.tar.gz -C /opt/atlassian/bamboo
+chown -R bamboo: /opt/atlassian/bamboo
+mkdir -p /var/atlassian/bamboo/atlassian-bamboo-8.1.1
+chown -R bamboo: /var/atlassian/bamboo
+/bin/cp -f /home/robot/devops-2022/config/bamboo/bamboo-init.properties /opt/atlassian/bamboo/atlassian-bamboo-8.1.1/atlassian-bamboo/WEB-INF/classes
+chown bamboo: /opt/atlassian/bamboo/atlassian-bamboo-8.1.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
+```
+
+# Instalación de Bitbucket
+
+### Referencia
+[Install Bitbucket Server on Linux](https://confluence.atlassian.com/bitbucketserver/install-bitbucket-server-on-linux-868976991.html)
+
+* Instalador de Bitbucket.
+* Java 8 o Superior.
+* Base de datos postgres creada.
+* Agregar los puertos 990, 7992, and 7993
+
+BAse de Datos
+````
+sudo -u postgres bash -c "psql -c \"CREATE ROLE bitbucket_user WITH LOGIN PASSWORD 'bitbucket_user_pass' VALID UNTIL 'infinity';\""
+sudo -u postgres bash -c "psql -c \"CREATE DATABASE bitbucket_db WITH ENCODING='UTF8' OWNER=bitbucket_user CONNECTION LIMIT=-1;\""
+
+```
+
+
+
+Dejar el instalador publico en el bucket obtener url y descargar con wget
+
+```
+wget https://storage.googleapis.com/devops-2022/atlassian-bitbucket-7.19.2-x64.bin
+chmod u+x atlassian-bitbucket-7.19.2-x64.bin
+./an-bitbucket-7.19.2-x64.bin -q
+```
+
+Instalación de git desde la fuente
+
+El git que esta disponible en las distribuciones es el estable y es anterior al que requiere bitbucket por lo que es necesario instalar una version 
+compatible Git 2.30.0 or higher.
+
+
+
+````
+dnf install dh-autoreconf curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel
+
+
+
+## Instalación de GCP SDK
+```
+sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
+[google-cloud-sdk]
+name=Google Cloud SDK
+baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=0
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOM
+
+gsutil cp gs://devops-2022/devops-2020-337523-46f61b034ef2.json
+gsutil cp https://storage.cloud.google.com/devops-2022/devops-2020-337523-46f61b034ef2.json
+
+gs://devops-2022/atlassian-bamboo-8.1.1.tar.gz
+
+https://storage.googleapis.com/devops-2022/atlassian-bamboo-8.1.1.tar.gz
+```
+
+
+Inventario de Herramientas
+-------------------------
+java
+docker 
+maven
+ansible
+terraform
+gccloud
+wget
+nano
+dnf
+yum
+postgres
+git
+bash
+
+TODO's
+------
+
+Creación de Storage bucket desde terraform
+Ansibilisar configuracion inicial.
+Arrancar bamboo desde el script de instalación.-> OK
+Usar nginx proxy.
+Fix timezone del OS
+
+
+
+
+
+
