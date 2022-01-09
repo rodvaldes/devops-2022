@@ -21,7 +21,8 @@ resource "google_compute_network" "vpc_network" {
 
 resource "google_compute_instance" "vm_instance" {
   name         = "devops-instance"
-  machine_type = "e2-medium"
+  machine_type = "e2-standard-4"
+  allow_stopping_for_update = true
   tags         = ["docker", "dev"]
   metadata = {
     startup-script = file("init.sh")
@@ -50,7 +51,7 @@ resource "google_compute_firewall" "default" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "8085", "7990", "1000-2000"]
+    ports    = ["22", "80", "8085", "7990", "7999", "1000-2000"]
   }
   source_ranges = ["0.0.0.0/0"]
 }
