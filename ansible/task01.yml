@@ -7,9 +7,12 @@
        ansible.builtin.yum:
          name: maven
          state: latest
-     - name: Instalar listado de apps
-       ansible.builtin.yum:
-        - nginx
-        - postgresql
-        - postgresql-server
-       state: present
+     - name: Instalar tools
+       yum:
+        name:
+         - nginx
+         - wget
+         - nano
+         - git
+       state: latest
+       update_cache: true
