@@ -3,11 +3,13 @@
   hosts: localhost
   remote_user: root
   tasks:
-     - name: Dejando una marca
-       command: "touch /tmp/ansible_was_here"
-     - name: Dejando otra marca
-       command: "touch /tmp/ansible_was_here_too"
      - name: Ensure apache is at the latest version
        ansible.builtin.yum:
          name: maven
          state: latest
+     - name: Instalar listado de apps
+       ansible.builtin.yum:
+        - nginx
+        - postgresql
+        - postgresql-server
+       state: present
