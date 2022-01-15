@@ -31,6 +31,7 @@ resource "google_compute_instance" "vm_instance" {
   boot_disk {
     initialize_params {
       image = "projects/centos-cloud/global/images/centos-8-v20211214"
+      size = "100"
     }
   }
 
@@ -51,7 +52,7 @@ resource "google_compute_firewall" "default" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "8085", "7990", "7999", "1000-2000"]
+    ports    = ["22", "80", "8085", "7990", "7999", "8081", "9002", "1000-2000"]
   }
   source_ranges = ["0.0.0.0/0"]
 }
