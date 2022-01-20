@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "Bootstrapping software layer....."
 timedatectl set-timezone America/Santiago
-yum update
-yum install -y yum-utils  # este git no sirve para bitbucket
-dnf install dh-autoreconf curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel --skip-broken
+yum update -y
+yum install -y yum-utils
+dnf install -y dh-autoreconf curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel --skip-broken
 dnf install asciidoc xmlto -y --skip-broken
 dnf install getop -y --skip-broken
 dnf group install "Development Tools" -y
@@ -25,18 +25,32 @@ groupadd docker
 adduser robot
 usermod -aG wheel robot
 usermod -aG docker robot
+adduser rvaldes
+usermod -aG wheel rvaldes
+usermod -aG docker rvaldes
+wget https://storage.googleapis.com/devops-2022/git-2.34.0.tar.gz
+tar -xzvf git-2.34.0.tar.gz
+cd git-2.34.0
+make configure
+./configure --prefix=/usr
+make all doc info
+make install install-doc install-html install-info
+cd ..
 firewall-cmd --zone=public --add-service=http
 firewall-cmd --zone=public --permanent --add-port 8085/tcp
 firewall-cmd --zone=public --permanent --add-port 7990/tcp
+firewall-cmd --zone=public --permanent --add-port 7999/tcp
+firewall-cmd --zone=public --permanent --add-port 9002/tcp
+firewall-cmd --zone=public --permanent --add-port 8081/tcp
+firewall-cmd --zone=public --permanent --add-port 9000/tcp
 firewall-cmd --reload
-#yum install -y httpd
-#systemctl enable httpd
-#systemctl start httpd
 yum install -y epel-release
 yum update
 yum install -y ansible
+yum install -y terraform
 yum install -y java-1.8.0-openjdk
 yum install -y maven
+yum install -y htop
 dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 dnf -qy module disable postgresql
 dnf install -y postgresql14-server wget
