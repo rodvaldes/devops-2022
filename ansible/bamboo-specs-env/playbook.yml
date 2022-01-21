@@ -1,0 +1,112 @@
+---
+- name: Configuraciones iniciales
+  hosts: app
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Setear timezone America/Santiago.
+      community.general.timezone:
+       name: America/Santiago
+    
+    - name: Install git
+      yum:
+       name: git
+       state: present
+       update_cache: true
+
+    - name: Install Java
+      yum:
+       name: java
+       state: present
+       update_cache: true
+
+    - name: Install Maven
+      yum:
+       name: maven
+       state: present
+       update_cache: true
+
+    - name: Install Terraform
+      yum:
+       name: terraform
+       state: present
+       update_cache: true
+
+- name: Install Docker
+  gather_facts: false
+  hosts: app
+
+  tasks:
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+      become: true
+
+    - name: Install device-mapper-persistent-data
+      yum:
+        name: device-mapper-persistent-data
+        state: latest
+      become: true
+    - name: Install lvm2
+      yum:
+        name: lvm2
+        state: latest
+      become: true
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docer-ce.repo
+      become: true
+
+    - name: Enable Docker Edge repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-edge'
+        option: enabled
+        value: 0
+      become: true
+
+    - name: Enable Docker Test repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-test'
+        option: enabled
+        value: 0
+      become: true
+
+    - name: Install Docker
+      package:
+        name: docker-ce
+        state: latest
+      become: true
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+      become: true
+
+    - name: Add user vagrant to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: true
+      become: true
+
+    - name: Add user rvaldes to docker group
+      user:
+        name: rvaldes
+        groups: docker
+        append: true
+      become: true
+
+    - name: Add user bamboo to docker group
+      user:
+        name: bamboo
+        groups: docker
+        append: true
+      become: true
+    
