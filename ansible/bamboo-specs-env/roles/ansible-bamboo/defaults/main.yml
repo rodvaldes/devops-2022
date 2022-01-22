@@ -1,0 +1,17 @@
+---
+# defaults file for bamboo
+
+# psycopg2 needed to check superuser has password
+bamboo_prerequisites:
+  - python-psycopg2
+bamboo_version:   8.1.1
+bamboo_baseurl:   https://storage.googleapis.com/devops-2022
+bamboo_installer: atlassian-bamboo-{{ bamboo_version }}.tar.gz
+bamboo_user:      bamboo
+# use postgresql or mysql
+bamboo_dbconnector: postgresql
+bamboo_tmp:       /var/tmp
+bamboo_installto: /opt
+bamboo_datadir:   /var/atlassian/bamboo-data
+bamboo_dbname:    bamboo_db
+bamboo_dbuser:    bamboo_user
