@@ -1,0 +1,6 @@
+db_name_bamboo: bamboo_db
+db_user_bamboo: bamboo_user_pass
+db_password_bamboo: xxxxxxxxxxxxx
+db_name_bitbucket: bitbucket_db
+db_user_bitbucket: bitbucket_user_pass
+db_password_bitbucket: xxxxxxxxxxxxx

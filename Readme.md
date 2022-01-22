@@ -201,16 +201,16 @@ postgres
 git
 bash
 
-TODO's
+
+
+TODO
 ------
 
-Creación de Storage bucket desde terraform
-Ansibilisar configuracion inicial.
-Arrancar bamboo desde el script de instalación.-> OK
-Usar nginx proxy.
-Fix timezone del OS
-
-
+* Creación de Storage bucket desde terraform
+* Ansibilisar configuracion inicial.
+* Arrancar bamboo desde el script de instalación.-> OK
+* Usar nginx proxy.
+* Fix timezone del OS
 
 
 
