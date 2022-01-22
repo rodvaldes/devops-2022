@@ -27,6 +27,12 @@
        state: present
        update_cache: true
 
+    - name: Git checkout
+      ansible.builtin.git:
+       repo: 'https://github.com/rodvaldes/devops-2022.git'
+       dest: /home/vagrant/devops-2022
+
+
 - name: Install Docker
   gather_facts: false
   hosts: app
@@ -103,6 +109,20 @@
         groups: docker
         append: true
       become: true
+
+    - name: Download pip installer
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+
+    - name: Install pip
+      shell: |
+        /usr/bin/python3 /tmp/get-pip.py
+    
+    - name: Install python-postgres packages packages
+      pip: "name={{ item }}  state=present"
+      with_items:
+        - psycopg2-binary  
 
 - name: Instalación y Configuración de PostgreSQL
   hosts: app
@@ -213,4 +233,4 @@
 
   handlers:
     - name: restart postgres
-      service: name=postgresql state=restarted 
+      service: name=postgresql state=restarted
