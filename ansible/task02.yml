@@ -1,0 +1,30 @@
+---
+- name: Playbook config software layer
+  hosts: localhost
+  remote_user: root
+  
+  tasks:
+  - name: Validar instalacion wget
+    ansible.builtin.yum:
+      name: wget
+      state: present
+      update_cache: true
+    become: true
+  - name: Validar instalacion maven
+    yum:
+      name: maven
+      state: present
+      update_cache: true
+    become: true
+  - name: Validar instalacion java-1.8.0-openjdk
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+      update_cache: true
+    become: true
+  - name: Validar instalacion git
+    yum:
+      name: git
+      state: present
+      update_cache: true
+    become: true
